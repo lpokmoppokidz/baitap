@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng Ký và Đăng Nhập</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f4;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        margin: 10px;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background: blue;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: darkblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="register-container">
+      <h2>Đăng Ký</h2>
+      <input type="text" id="name" placeholder="Tên" required />
+      <input type="email" id="email" placeholder="Email" required />
+
+      <input type="password" id="password" placeholder="Mật khẩu" required />
+      <button onclick="registerUser()">Đăng Ký</button>
+      <p id="register-message"></p>
+      <button onclick="showLogin()">Đã có tài khoản? Đăng Nhập</button>
+    </div>
+
+    <div class="container" id="login-container" style="display: none">
+      <h2>Đăng Nhập</h2>
+      <input type="email" id="login-email" placeholder="Email" required />
+      <input
+        type="password"
+        id="login-password"
+        placeholder="Mật khẩu"
+        required
+      />
+      <button onclick="loginUser()">Đăng Nhập</button>
+      <p id="login-message"></p>
+      <button onclick="showRegister()">Chưa có tài khoản? Đăng Ký</button>
+    </div>
+
+    <script>
+      function registerUser() {
+        document.getElementById("register-container").style.display = "block";
+        document.getElementById("login-container").style.display = "none";
+      }
+      function showLogin() {
+        document.getElementById("register-container").style.display = "none";
+        document.getElementById("login-container").style.display = "block";
+      }
+      async function registerUser() {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        if (!name || !email || !password) {
+          document.getElementById("register-message").innerText =
+            "Vui lòng nhập đầy đủ thông tin.";
+          return;
+        }
+
+        const response = await fetch("http://localhost:8000/api/user/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          document.getElementById("register-message").innerText =
+            "Đăng ký thành công!";
+        } else {
+          document.getElementById("register-message").innerText =
+            data.message || "Đăng ký thất bại.";
+        }
+      }
+
+      async function loginUser() {
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+
+        if (!email || !password) {
+          document.getElementById("login-message").innerText =
+            "Vui lòng nhập đầy đủ thông tin.";
+          return;
+        }
+
+        const response = await fetch("http://localhost:8000/api/user/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          document.getElementById("login-message").innerText =
+            "Đăng nhập thành công!";
+        } else {
+          document.getElementById("login-message").innerText =
+            data.message || "Đăng nhập thất bại.";
+        }
+      }
+    </script>
+  </body>
+</html>

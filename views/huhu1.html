@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .container {
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h2>Trang Chủ Admin</h2>
+    </div>
+    <div class="container">
+        <h3>Danh Sách Người Dùng</h3>
+        <button onclick="fetchUsers()">Tải Danh Sách Người Dùng</button>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên</th>
+                    <th>Email</th>
+                    <th>Địa Chỉ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dữ liệu người dùng sẽ được tải vào đây -->
+            </tbody>
+        </table>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        async function fetchUsers() {
+            const response = await fetch('http://localhost:8000/api/user/getallusers');
+            const data = await response.json();
+            
+            const tableBody = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = "";  // Clear existing rows
+            
+            if (data.length === 0) {
+                document.getElementById('message').innerText = "Không có người dùng nào.";
+            } else {
+                data.forEach(user => {
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).innerText = user._id;
+                    row.insertCell(1).innerText = user.name;
+                    row.insertCell(2).innerText = user.email;
+                    row.insertCell(3).innerText = user.address;
+                });
+            }
+        }
+    </script>
+</body>
+</html>
